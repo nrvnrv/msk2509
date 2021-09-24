@@ -1,14 +1,14 @@
 # подключаем библиотеки
 import pytesseract # OCR
 import cv2 # обработка изображений, computer vision
-
-frame = cv2.imread("0.png") # открываем и читаем картинку
+import matplotlib.pyplot as plt
+frame = cv2.imread("data/0.png") # открываем и читаем картинку
 # подключаем модуль
 pytesseract.pytesseract.tesseract_cmd = "C:/Program Files/Tesseract-OCR/tesseract.exe"
 string = pytesseract.image_to_string(frame) # запуск OCR
 print(string) # вывод текста
 
-target_word = ['a',"o"]
+target_word = ['0123456789']
 data = pytesseract.image_to_data(frame, output_type=pytesseract.Output.DICT)
 
 for tw in target_word:
