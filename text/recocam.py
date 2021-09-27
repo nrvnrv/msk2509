@@ -2,9 +2,10 @@
 import pytesseract # OCR
 import cv2 # обработка изображений, computer vision
 
+source = 0
 # подключаем модуль
 pytesseract.pytesseract.tesseract_cmd = "C:/Program Files/Tesseract-OCR/tesseract.exe"
-cap = cv2.VideoCapture(0) # получаем данные с камеры
+cap = cv2.VideoCapture(source) # получаем данные с камеры
 while(True):
     ret, frame = cap.read()
     string = pytesseract.image_to_string(frame)
