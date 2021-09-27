@@ -3,11 +3,13 @@ import cv2
 
 
 class WebcamVideoStream:
-    def __init__(self, src=0, width=320, height=240):
+    def __init__(self, src=0):
         self.thread = Thread(target=self.update, daemon=True, args=())
         self.stream = cv2.VideoCapture(src)
-        self.stream.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.stream.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        frame_width = int(self.stream.get(3))
+        frame_height = int(self.stream.get(4))
+        self.stream.set(cv2.CAP_PROP_FRAME_WIDTH, frame_width)
+        self.stream.set(cv2.CAP_PROP_FRAME_HEIGHT, frame_height)
         self.stream.set(cv2.CAP_PROP_BUFFERSIZE,0)
         (self.grabbed, self.frame) = self.stream.read()
         self.started = False
@@ -42,7 +44,9 @@ class WebcamVideoStream:
         self.stream.release()
 
 if __name__=="__main__":
-    vs = WebcamVideoStream(0).start()
+    source = 'blob:https://rtsp.me/af01d6b5-3667-4a96-a793-17f2efbc67a0'
+    source = 0
+    vs = WebcamVideoStream(source).start()
     while True :
         frame = vs.read()
         cv2.imshow('webcam', frame)

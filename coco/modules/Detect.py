@@ -5,13 +5,16 @@ from .WebcamVideoStream import WebcamVideoStream
 from threading import Thread
 import os.path
 
+
 source = 0 # 'http://94.72.19.56/mjpg/video.mjpg'
 objnames = 'coco/obj.names'
 cfgfile = 'coco/yolov4-tiny.cfg'
 weightfile = 'coco/yolov4-tiny.weights'
 
+
 class Detect:
     def __init__(self, net_size=0):
+        print("initialization start")
         self.thread = Thread(target=self.my_frame_producer, daemon=True, args=())
         self.started = False
         self.enabled = False
@@ -21,10 +24,13 @@ class Detect:
         self.net.setInputSize(net_size, net_size)  # 416, 416 for better accuracy, set in run.py
         self.net.setInputScale(1.0 / 127)  # 1.0 / 256 for better accuracy
         self.net.setInputSwapRB(True)
+        print("initialization done")
         
         
     def my_frame_producer(self):
+        print("Start video recieving")
         stream = WebcamVideoStream(source).start()
+        print("Receiving video")
         while True:
             frame = stream.read()
             classes, confidences, boxes = self.net.detect(frame, confThreshold=0.3, nmsThreshold=0.4)
@@ -80,6 +86,7 @@ class Detect:
 
 
     def start(self):
+        print("Start")
         if self.started:
             print("There is an instance of Detect running already")
             return None
