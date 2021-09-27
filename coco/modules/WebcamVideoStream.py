@@ -42,4 +42,11 @@ class WebcamVideoStream:
         self.stream.release()
 
 if __name__=="__main__":
-    WebcamVideoStream(0)
+    vs = WebcamVideoStream(0).start()
+    while True :
+        frame = vs.read()
+        cv2.imshow('webcam', frame)
+        if cv2.waitKey(1) == 27 :
+            break
+    vs.stop()
+    cv2.destroyAllWindows()
